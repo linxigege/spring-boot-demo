@@ -6,16 +6,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-
-/**
- * Site Controller
- *
- * @author Funson
- * @date 2019/10/12
- */
 
 @Controller
 public class SiteController {
@@ -23,7 +16,7 @@ public class SiteController {
     @GetMapping({"", "/", "index"})
     public String index(HttpServletRequest request) {
         User user = (User) request.getSession().getAttribute("user");
-        if (user  == null) {
+        if (user == null) {
             return "redirect:/login";
         }
         request.setAttribute("user", user);
@@ -34,6 +27,18 @@ public class SiteController {
     @GetMapping("/login")
     public String login() {
         return "site/login";
+    }
+
+    @GetMapping("/ajax")
+    public String ajax() {
+        return "site/ajax";
+    }
+
+    @GetMapping("/getCurrentUser")
+    @ResponseBody
+    public String getCurrentUser(HttpServletRequest request) {
+        User user = (User) request.getSession().getAttribute("user");
+        return user.getName();
     }
 
     @PostMapping("/login")
